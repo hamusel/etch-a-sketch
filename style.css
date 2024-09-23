@@ -7,14 +7,6 @@
 }
 
 
-#biggerContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    gap: 0
-}
-
 h1 {
     text-align: center;
 }
@@ -42,4 +34,5 @@ body {
 button {
     width: 100px;
     margin-top: 40px;
+    margin-bottom: 40px;
 }

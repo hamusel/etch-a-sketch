@@ -1,10 +1,9 @@
 const container = document.querySelector('#container');
-const colors = ["blue", "green", "purple", "pink", "yellow", "black"];
 const defaultGridAmount = 16;
 
-function getRandomColor() {
-    const colorNumber = Math.floor(Math.random() * colors.length);
-    return colors[colorNumber];
+
+function getRandomRGBValue() {
+    return Math.floor(Math.random() * 255);
 }
 
 
@@ -35,50 +34,48 @@ function createNewGrids(value) {
             square.style.borderRight = "1px solid black"
 
             square.addEventListener("mouseenter", () => {
-                square.style.backgroundColor = "black";
-            })
+                let currentOpacity = parseFloat(square.dataset.opacity);
+
+                if (isNaN(currentOpacity)) {
+                    currentOpacity = 0.1;
+                }
+
+                if (currentOpacity < 1) {
+                    currentOpacity += 0.1;
+                } else {
+                    currentOpacity = 1;
+                }
+
+                square.dataset.opacity = currentOpacity.toString();
+
+                const r = getRandomRGBValue();
+                const g = getRandomRGBValue();
+                const b = getRandomRGBValue();
+                square.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${currentOpacity})`;
+            });
+
 
             container.appendChild(square);
         }
     }
 }
 
+createNewGrids(defaultGridAmount);
 
-for (let i = 0; i < defaultGridAmount; i++) {
-    for (let j = 0; j < defaultGridAmount; j++) {
-        const square = document.createElement("div");
-        square.style.height = "58px" // 960 : defaultGridAmount - 2
-        square.style.width = "58px"
-        square.style.margin = "0px";
-        square.style.padding = "0px";
-        square.style.boxSizing = "border-box";
-        square.style.display = "inline-block";
-
-        if (i === 15) {
-            square.style.borderBottom = "1px solid black";
-        }
-        if (j === 0) {
-            square.style.borderLeft = "1px solid black";
-        }
-
-        square.style.borderTop = "1px solid black"
-        square.style.borderRight = "1px solid black"
-
-        square.addEventListener("mouseenter", () => {
-            square.style.backgroundColor = "black";
-        })
-
-        container.appendChild(square);
-    }
-}
 
 const button = document.querySelector("button");
-
 button.addEventListener("click", () => {
     const value = parseInt(prompt("Choose how many grids: "));
+    if (!Number.isInteger(value)) {
+        alert("Choose a number!")
+    }
     if (value > 100) {
-        alert("This is too big!")
-    } else {
+        alert("Choose a smaller number!")
+    }
+    else if (value < 3) {
+        alert("Choose a bigger number!")
+    }
+    else {
         createNewGrids(value)
     }
 })
